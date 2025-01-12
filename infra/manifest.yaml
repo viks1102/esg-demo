@@ -1,0 +1,102 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pingpong-a
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pingpong-a
+  namespace: pingpong-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pingpong-a
+  template:
+    metadata:
+      labels:
+        app: pingpong-a
+    spec:
+      containers:
+        - name: pingpong-a
+          image: us.gcr.io/esg-demo-446616/new-ping-pong:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: TARGET
+              value: "http://pingponger-b.pingpong-b.svc.cluster.local:8080/ping"
+            - name: TICK_MS
+              value: "100"
+            - name: METRICS__PATH
+              value: "/-/metrics"
+            - name: METRICS__PORT
+              value: "9080"
+            - name: SERVICE__PORT
+              value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pingponger-a
+  namespace: pingpong-a
+spec:
+  selector:
+    app: pingpong-a
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pingpong-b
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pingpong-b
+  namespace: pingpong-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pingpong-b
+  template:
+    metadata:
+      labels:
+        app: pingpong-b
+    spec:
+      containers:
+        - name: pingpong-b
+          image: us.gcr.io/esg-demo-446616/new-ping-pong:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: TARGET
+              value: "http://pingponger-a.pingpong-a.svc.cluster.local:8080/ping"
+            - name: TICK_MS
+              value: "100"
+            - name: METRICS__PATH
+              value: "/-/metrics"
+            - name: METRICS__PORT
+              value: "9080"
+            - name: SERVICE__PORT
+              value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pingponger-b
+  namespace: pingpong-b
+spec:
+  selector:
+    app: pingpong-b
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

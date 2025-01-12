@@ -1,0 +1,26 @@
+
+# The allow-pingpong-a-to-pingpong-b policy allows pingpong-a pods to send traffic to pingpong-b pods on port 8080 (or any port you specify).
+# The deny-all policies block all ingress and egress traffic within the pingpong-a and pingpong-b namespaces, except for the traffic allowed by the allow-pingpong-a-to-pingpong-b policy.
+# The pod selectors are based on labels (app.kubernetes.io/name in this case). Ensure that the labels in your pod definitions match these selectors.
+            
+---
+# Allow egress traffic from pingpong-b to pingpong-a (on port 8080)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pingpong-b-to-pingpong-a
+  namespace: pingpong-b
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: pingpong-b
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: pingpong-a
+      ports:
+        - protocol: TCP
+          port: 8080
+  policyTypes:
+    - Egress

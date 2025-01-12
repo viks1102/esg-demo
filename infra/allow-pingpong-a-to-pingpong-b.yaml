@@ -1,0 +1,23 @@
+# Allow communication between pingpong-a and pingpong-b
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pingpong-a-to-pingpong-b
+  namespace: pingpong-a
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: pingpong-a
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: pingpong-b
+      ports:
+        - protocol: TCP
+          port: 8080
+  policyTypes:
+    - Ingress
+        
+        
