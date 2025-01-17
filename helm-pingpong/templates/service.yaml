@@ -1,31 +1,25 @@
-# service.yaml
----
 apiVersion: v1
 kind: Service
 metadata:
   name: pingponger-a
   namespace: pingpong-a
-  # labels:
-  #   app: {{ .Values.services.pingpongA.selector }}
 spec:
   selector:
-    app: {{ .Values.services.pingpongA.selector }}
+    app: pingpong-a
   ports:
     - protocol: TCP
-      port: {{ .Values.services.pingpongA.port }}
-      targetPort: {{ .Values.services.pingpongA.targetPort }}
+      port: 8080
+      targetPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: pingponger-b
   namespace: pingpong-b
-  # labels:
-  #   app: {{ .Values.services.pingpongB.selector }}
 spec:
   selector:
-    app: {{ .Values.services.pingpongB.selector }}
+    app: pingpong-b
   ports:
     - protocol: TCP
-      port: {{ .Values.services.pingpongB.port }}
-      targetPort: {{ .Values.services.pingpongB.targetPort }}
+      port: 8080
+      targetPort: 8080
