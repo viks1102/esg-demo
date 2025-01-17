@@ -1,9 +1,9 @@
 
-# namespaces:
-#   enabled: true
-#   names:
-#     pingpongA: pingpong-a
-#     pingpongB: pingpong-b
+namespaces:
+  enabled: true
+  names:
+    pingpongA: pingpong-a
+    pingpongB: pingpong-b
 
 services:
   pingpongA:
@@ -92,3 +92,18 @@ ingress:
         service:
           name: pingponger-b
           port: 8080          
+
+certManager:
+  clusterIssuer:
+    enabled: true
+    name: letsencrypt-prod
+    namespace: cert-manager
+    acme:
+      server: https://acme-v02.api.letsencrypt.org/directory
+      email: viks11021@gmail.com
+      privateKeySecretRef:
+        name: letsencrypt-prod
+      solvers:
+        - http01:
+            ingress:
+              class: nginx
