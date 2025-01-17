@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.services.pingpongA.name }}
+  name: pingponger-a
   namespace: pingpong-a
   labels:
     app: {{ .Values.services.pingpongA.selector }}
@@ -18,7 +18,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.services.pingpongB.name }}
+  name: pingponger-b
   namespace: pingpong-b
   labels:
     app: {{ .Values.services.pingpongB.selector }}
