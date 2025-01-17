@@ -1,10 +1,10 @@
 # Values.yaml
 ---
-namespaces:
-  enabled: true
-  names:
-    pingpongA: pingpong-a
-    pingpongB: pingpong-b
+# namespaces:
+#   enabled: true
+#   names:
+#     pingpongA: pingpong-a
+#     pingpongB: pingpong-b
 
 services:
   pingpongA:

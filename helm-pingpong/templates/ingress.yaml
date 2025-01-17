@@ -6,7 +6,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: pingpong-ingress-a
-  namespace: {{ $.Values.namespaces.pingpongA }}
+  namespace: pingpong-a
   annotations:
 {{- range $key, $value := $ingress.annotations }}
     {{ $key }}: "{{ $value }}"
@@ -40,7 +40,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: pingpong-ingress-b
-  namespace: {{ $.Values.namespaces.pingpongB }}
+  namespace: pingpong-b
   annotations:
 {{- range $key, $value := $ingress.annotations }}
     {{ $key }}: "{{ $value }}"
