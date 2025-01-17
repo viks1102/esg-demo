@@ -5,8 +5,8 @@ kind: Service
 metadata:
   name: pingponger-a
   namespace: pingpong-a
-  labels:
-    app: {{ .Values.services.pingpongA.selector }}
+  # labels:
+  #   app: {{ .Values.services.pingpongA.selector }}
 spec:
   selector:
     app: {{ .Values.services.pingpongA.selector }}
@@ -20,8 +20,8 @@ kind: Service
 metadata:
   name: pingponger-b
   namespace: pingpong-b
-  labels:
-    app: {{ .Values.services.pingpongB.selector }}
+  # labels:
+  #   app: {{ .Values.services.pingpongB.selector }}
 spec:
   selector:
     app: {{ .Values.services.pingpongB.selector }}
