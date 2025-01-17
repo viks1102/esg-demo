@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pingpong-ingress-a
+  namespace: pingpong-a
+  annotations:
+    kubernetes.io/ingress.class: "nginx" 
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" 
+   
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - pingpong-a-esg-demo.site
+      secretName: tls-secret
+  rules:
+    - host: pingpong-a-esg-demo.site
+      http:
+        paths:
+          - path: /ping
+            pathType: Prefix
+            backend:
+              service:
+                name: pingponger-a
+                port:
+                  number: 8080
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pingpong-ingress-b
+  namespace: pingpong-b
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" 
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - pingpong-b-esg-demo.site
+      secretName: pingpong-b-tls-secret
+  rules:
+    - host: pingpong-b-esg-demo.site
+      http:
+        paths:
+          - path: /ping
+            pathType: Prefix
+            backend:
+              service:
+                name: pingponger-b
+                port:
+                  number: 8080
+                  

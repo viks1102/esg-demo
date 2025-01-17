@@ -1,0 +1,26 @@
+# ConfigMap for pingpong-a 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pingpong-a-config
+  namespace: pingpong-a
+data:
+  TARGET: "http://pingponger-b.pingpong-b.svc.cluster.local:8080/ping"
+  TICK_MS: "100"
+  METRICS__PATH: "/-/metrics"
+  METRICS__PORT: "9080"
+  SERVICE__PORT: "8080"
+
+---  
+# ConfigMap for pingpong-a 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pingpong-b-config
+  namespace: pingpong-b
+data:
+  TARGET: "http://pingponger-a.pingpong-a.svc.cluster.local:8080/ping"
+  TICK_MS: "100"
+  METRICS__PATH: "/-/metrics"
+  METRICS__PORT: "9080"
+  SERVICE__PORT: "8080"

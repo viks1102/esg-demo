@@ -71,7 +71,7 @@ func startAppServer(cfg *Config, wg *sync.WaitGroup) {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Write([]byte("pong"))
+		writer.Write([]byte("Hi, I am healthy and working, pong"))
 	})
 
 	slog.With(slog.Any("port", cfg.Service.Port)).Info("app server started")
