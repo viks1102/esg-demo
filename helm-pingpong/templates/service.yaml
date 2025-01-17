@@ -1,0 +1,31 @@
+# service.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.pingpongA.name }}
+  namespace: {{ .Values.namespaces.names.pingpongA }}
+  labels:
+    app: {{ .Values.services.pingpongA.selector }}
+spec:
+  selector:
+    app: {{ .Values.services.pingpongA.selector }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.services.pingpongA.port }}
+      targetPort: {{ .Values.services.pingpongA.targetPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.pingpongB.name }}
+  namespace: {{ .Values.namespaces.names.pingpongB }}
+  labels:
+    app: {{ .Values.services.pingpongB.selector }}
+spec:
+  selector:
+    app: {{ .Values.services.pingpongB.selector }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.services.pingpongB.port }}
+      targetPort: {{ .Values.services.pingpongB.targetPort }}

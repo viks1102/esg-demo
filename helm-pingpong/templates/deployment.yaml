@@ -1,0 +1,65 @@
+# deployment.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pingpong-a
+  namespace: pingpong-a
+spec:
+  replicas: {{ .Values.pingpongA.replicas }}
+  selector:
+    matchLabels:
+      app: pingpong-a
+  template:
+    metadata:
+      labels:
+        app: pingpong-a
+    spec:
+      containers:
+        - name: pingpong-a
+          image: {{ .Values.pingpongA.image.repository }}:{{ .Values.pingpongA.image.tag }}
+          imagePullPolicy: {{ .Values.pingpongA.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: pingpong-a-config
+          resources:
+            requests:
+              memory: {{ .Values.pingpongA.resources.requests.memory }}
+              cpu: {{ .Values.pingpongA.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.pingpongA.resources.limits.memory }}
+              cpu: {{ .Values.pingpongA.resources.limits.cpu }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pingpong-b
+  namespace: pingpong-b
+spec:
+  replicas: {{ .Values.pingpongB.replicas }}
+  selector:
+    matchLabels:
+      app: pingpong-b
+  template:
+    metadata:
+      labels:
+        app: pingpong-b
+    spec:
+      containers:
+        - name: pingpong-b
+          image: {{ .Values.pingpongB.image.repository }}:{{ .Values.pingpongB.image.tag }}
+          imagePullPolicy: {{ .Values.pingpongB.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: pingpong-b-config
+          resources:
+            requests:
+              memory: {{ .Values.pingpongB.resources.requests.memory }}
+              cpu: {{ .Values.pingpongB.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.pingpongB.resources.limits.memory }}
+              cpu: {{ .Values.pingpongB.resources.limits.cpu }}

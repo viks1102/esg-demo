@@ -1,0 +1,31 @@
+# configmap.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pingpong-a-config
+  namespace: pingpong-a
+  labels:
+    app: pingpong-a
+  annotations: {}
+data:
+  TARGET: {{ .Values.pingpongA.env.TARGET | quote }}
+  TICK_MS: {{ .Values.pingpongA.env.TICK_MS | quote }}
+  METRICS__PATH: {{ .Values.pingpongA.env.METRICS__PATH | quote }}
+  METRICS__PORT: {{ .Values.pingpongA.env.METRICS__PORT | quote }}
+  SERVICE__PORT: {{ .Values.pingpongA.env.SERVICE__PORT | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pingpong-b-config
+  namespace: pingpong-b
+  labels:
+    app: pingpong-b
+  annotations: {}
+data:
+  TARGET: {{ .Values.pingpongB.env.TARGET | quote }}
+  TICK_MS: {{ .Values.pingpongB.env.TICK_MS | quote }}
+  METRICS__PATH: {{ .Values.pingpongB.env.METRICS__PATH | quote }}
+  METRICS__PORT: {{ .Values.pingpongB.env.METRICS__PORT | quote }}
+  SERVICE__PORT: {{ .Values.pingpongB.env.SERVICE__PORT | quote }}

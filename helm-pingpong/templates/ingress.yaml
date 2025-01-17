@@ -1,0 +1,69 @@
+{{- if .Values.ingress }}
+{{- $ingress := .Values.ingress }}
+
+# Ingress for pingpong-a
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pingpong-ingress-a
+  namespace: {{ $.Values.namespaces.pingpongA }}
+  annotations:
+{{- range $key, $value := $ingress.annotations }}
+    {{ $key }}: "{{ $value }}"
+{{- end }}
+spec:
+  ingressClassName: {{ $ingress.className }}
+{{- if $ingress.tls.pingpongA.enabled }}
+  tls:
+    - hosts:
+{{- range $host := $ingress.tls.pingpongA.hosts }}
+        - {{ $host }}
+{{- end }}
+      secretName: {{ $ingress.tls.pingpongA.secretName }}
+{{- end }}
+  rules:
+    - host: {{ $ingress.rules.pingpongA.host }}
+      http:
+        paths:
+          - path: {{ $ingress.rules.pingpongA.path }}
+            pathType: {{ $ingress.rules.pingpongA.pathType }}
+            backend:
+              service:
+                name: {{ $ingress.rules.pingpongA.backend.service.name }}
+                port:
+                  number: {{ $ingress.rules.pingpongA.backend.service.port }}
+
+---
+
+# Ingress for pingpong-b
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pingpong-ingress-b
+  namespace: {{ $.Values.namespaces.pingpongB }}
+  annotations:
+{{- range $key, $value := $ingress.annotations }}
+    {{ $key }}: "{{ $value }}"
+{{- end }}
+spec:
+  ingressClassName: {{ $ingress.className }}
+{{- if $ingress.tls.pingpongB.enabled }}
+  tls:
+    - hosts:
+{{- range $host := $ingress.tls.pingpongB.hosts }}
+        - {{ $host }}
+{{- end }}
+      secretName: {{ $ingress.tls.pingpongB.secretName }}
+{{- end }}
+  rules:
+    - host: {{ $ingress.rules.pingpongB.host }}
+      http:
+        paths:
+          - path: {{ $ingress.rules.pingpongB.path }}
+            pathType: {{ $ingress.rules.pingpongB.pathType }}
+            backend:
+              service:
+                name: {{ $ingress.rules.pingpongB.backend.service.name }}
+                port:
+                  number: {{ $ingress.rules.pingpongB.backend.service.port }}
+{{- end }}

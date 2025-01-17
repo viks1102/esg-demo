@@ -1,0 +1,95 @@
+# Values.yaml
+---
+namespaces:
+  enabled: true
+  names:
+    pingpongA: pingpong-a
+    pingpongB: pingpong-b
+
+services:
+  pingpongA:
+    name: pingponger-a
+    selector: pingpong-a
+    port: 8080
+    targetPort: 8080
+
+  pingpongB:
+    name: pingponger-b
+    selector: pingpong-b
+    port: 8080
+    targetPort: 8080    
+
+pingpongA:
+  replicas: 1
+  image:
+    repository: us.gcr.io/esg-demo-446616/new-ping-pong
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+  env:
+    TARGET: "http://pingponger-b.pingpong-b.svc.cluster.local:8080/ping"
+    TICK_MS: "100"
+    METRICS__PATH: "/-/metrics"
+    METRICS__PORT: "9080"
+    SERVICE__PORT: "8080"
+
+pingpongB:
+  replicas: 1
+  image:
+    repository: us.gcr.io/esg-demo-446616/new-ping-pong
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+  env:
+    TARGET: "http://pingponger-a.pingpong-a.svc.cluster.local:8080/ping"
+    TICK_MS: "100"
+    METRICS__PATH: "/-/metrics"
+    METRICS__PORT: "9080"
+    SERVICE__PORT: "8080"
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  tls:
+    pingpongA:
+      enabled: true
+      hosts:
+        - pingpong-a-esg-demo.site
+      secretName: tls-secret
+    pingpongB:
+      enabled: true
+      hosts:
+        - pingpong-b-esg-demo.site
+      secretName: pingpong-b-tls-secret
+  rules:
+    pingpongA:
+      host: pingpong-a-esg-demo.site
+      path: /ping
+      pathType: Prefix
+      backend:
+        service:
+          name: pingponger-a
+          port: 8080
+    pingpongB:
+      host: pingpong-b-esg-demo.site
+      path: /ping
+      pathType: Prefix
+      backend:
+        service:
+          name: pingponger-b
+          port: 8080          
