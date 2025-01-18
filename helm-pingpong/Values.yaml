@@ -1,7 +1,11 @@
+# namespaces:
+#   names:
+#     pingpongA: pingpong-a
+#     pingpongB: pingpong-b
+
 namespaces:
-  names:
-    pingpongA: pingpong-a
-    pingpongB: pingpong-b
+  - pingpong-a
+  - pingpong-b
 
 services:
   pingpongA:
