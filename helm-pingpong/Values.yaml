@@ -1,5 +1,4 @@
 namespaces:
-  enabled: true
   names:
     pingpongA: pingpong-a
     pingpongB: pingpong-b
