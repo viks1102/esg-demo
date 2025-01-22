@@ -34,7 +34,10 @@ spec:
               cpu: "100m"      # Request 100m (0.1) CPU
             limits:
               memory: "256Mi"  # Limit memory to 256Mi
-              cpu: "200m"      # Limit CPU to 200m (0.2)    
+              cpu: "200m"      # Limit CPU to 200m (0.2) 
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000       
 ---
 apiVersion: v1
 kind: Service
@@ -84,7 +87,11 @@ spec:
               cpu: "100m"      # Request 100m (0.1) CPU
             limits:
               memory: "256Mi"  # Limit memory to 256Mi
-              cpu: "200m"      # Limit CPU to 200m (0.2)    
+              cpu: "200m"      # Limit CPU to 200m (0.2)
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000    
+
 ---
 apiVersion: v1
 kind: Service

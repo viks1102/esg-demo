@@ -1,0 +1,59 @@
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pingpong-communication
+  namespace: pingpong-a
+spec:
+  podSelector:
+    matchLabels:
+      app: pingpong-a  # Only Pods with label app=pingpong-a in pingpong-a namespace
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: pingpong-b  # Allow traffic from pingpong-b namespace
+          podSelector:
+            matchLabels:
+              app: pingpong-b  # Allow traffic from Pods with app=pingpong-b label in pingpong-b
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: pingpong-b  # Allow traffic to pingpong-b namespace
+          podSelector:
+            matchLabels:
+              app: pingpong-b  # Allow traffic to Pods with app=pingpong-b label in pingpong-b
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pingpong-communication
+  namespace: pingpong-b
+spec:
+  podSelector:
+    matchLabels:
+      app: pingpong-b  # Only Pods with label app=pingpong-b in pingpong-b namespace
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: pingpong-a  # Allow traffic from pingpong-a namespace
+          podSelector:
+            matchLabels:
+              app: pingpong-a  # Allow traffic from Pods with app=pingpong-a label in pingpong-a
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: pingpong-a  # Allow traffic to pingpong-a namespace
+          podSelector:
+            matchLabels:
+              app: pingpong-a  # Allow traffic to Pods with app=pingpong-a label in pingpong-a
