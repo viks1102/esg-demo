@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: pingpong-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway # Use Istio's ingress gateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "pingpong-a-esg-demo.site"
+        - "pingpong-b-esg-demo.site"

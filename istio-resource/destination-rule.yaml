@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: pingpong-a-destinationrule
+  namespace: pingpong-a
+spec:
+  host: pingponger-a.pingpong-a.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: pingpong-b-destinationrule
+  namespace: pingpong-b
+spec:
+  host: pingponger-b.pingpong-b.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
